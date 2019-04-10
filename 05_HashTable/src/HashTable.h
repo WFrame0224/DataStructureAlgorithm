@@ -20,9 +20,9 @@ typedef enum
 #define HASH_TABLE_SIZE 1024*1024 // 定义散列表的长度
 
 /* 定义散列表某一节点的数据结构 */
-typedef struct
+typedef struct HashNode
 {
-    HashNode *pNext;
+    struct HashNode* pNext;
     char *key;
     void *value;
     void (*free_value)(void *);

@@ -83,7 +83,7 @@ HashTable *hashTableNew()
         hashTableDelete(ht);
         return NULL;
     }
-    meset(ht->table, 0, sizeof(HashNode *) * HASH_TABLE_SIZE);
+    memset(ht->table, 0, sizeof(HashNode *) * HASH_TABLE_SIZE);
 
     return ht;
 }
