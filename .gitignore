@@ -8,6 +8,7 @@ __pycache__/
 *.cproject
 *.project
 05_HashTable/.settings/
+05_HashTable/Debug/
 
 # Distribution / packaging
 .Python
