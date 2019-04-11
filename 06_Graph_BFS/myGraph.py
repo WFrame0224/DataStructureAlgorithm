@@ -6,7 +6,7 @@
 @Author: Frame
 @LastEditors: Frame
 @Date: 2019-04-11 09:20:32
-@LastEditTime: 2019-04-11 10:07:00
+@LastEditTime: 2019-04-11 12:00:03
 '''
 from collections import deque
 
@@ -32,11 +32,12 @@ def creatGraph():
     graph['anuj'] = []
     graph['peggy'] = []
     graph['thom'] = []
-    graph['jonny'] = []
+    graph['jonny'] = ['mm']
 
     return graph
 
-def searchSeller(graph,name):
+
+def searchSeller(graph, name):
     '''
     @name: searchSeller()
     @brief: 采用了BFS(广度优先搜索算法进行)
@@ -45,13 +46,16 @@ def searchSeller(graph,name):
     @param {type} 
     @return: 
     '''
-    
+
     # 创建一个队列
     search_queue = deque()
     # 将你的邻居都加入到这个搜索的队列中
     search_queue += graph[name]
     # 记录检查过的人
     searched = []
+    # 记录队列添加的顺序
+    serchList = []
+    serchList.extend(graph[name])
 
     # 只要队列不为空,
     while search_queue:
@@ -61,17 +65,24 @@ def searchSeller(graph,name):
         if not person in searched:
             if personIsSeller(person):
                 print(person + ' is a mango seller!')
-                return True
+                print(serchList)
+                return person,serchList
             else:
                 # 如果不是芒果销售商，将这个人的朋友都加入到搜索队列中
                 search_queue += graph[person]
-                # 将这个人进行标记已经检查过
+                # 将这个人进行标记为已经检查过
                 searched.append(person)
-    return False
-            
+
+                # 记录本轮的添加顺序
+                serchList.extend(graph[person])
+    return None
+
+
 def personIsSeller(name):
     # 检查人的名字是否是以m结尾的，如果是，他就是芒果销售商
     return name[-1] == 'm'
 
+
 if __name__ == "__main__":
-    searchSeller(creatGraph(),'you')
+    graph = creatGraph()
+    searchSeller(graph, 'you')
