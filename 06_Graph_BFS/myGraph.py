@@ -6,7 +6,7 @@
 @Author: Frame
 @LastEditors: Frame
 @Date: 2019-04-11 09:20:32
-@LastEditTime: 2019-04-11 12:30:45
+@LastEditTime: 2019-04-11 14:53:46
 '''
 from collections import deque
 
@@ -32,7 +32,7 @@ def creatGraph():
     graph['anuj'] = []
     graph['peggy'] = []
     graph['thom'] = []
-    graph['jonny'] = ['mm']
+    graph['jonny'] = ['thom']
 
     return graph
 
@@ -80,7 +80,7 @@ def bfs(graph, start, end):
     # 创建一个路径队列
     pathQueue = []
     # 创建路径保存列表
-    allpath = []
+    # allpath = []
     # 将第一条路径放入
     pathQueue.append([start])
     while pathQueue:
@@ -90,13 +90,14 @@ def bfs(graph, start, end):
         node = path[-1]
         # 路径寻找
         if node == end:
+            # allpath.append(path)
             return path
         # 枚举所有相邻节点，构造新路径并将其推入队列
         for adjacent in graph.get(node, []):
             new_path = list(path)
             new_path.append(adjacent)
             pathQueue.append(new_path)
-    return allpath
+    # return allpath
 
     
     
