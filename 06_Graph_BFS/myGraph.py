@@ -2,11 +2,11 @@
 # coding=UTF-8
 '''
 @Descripttion: 利用字典实现图（Graph）,再用队列实现优先级
-@version: 
+@version:
 @Author: Frame
 @LastEditors: Frame
 @Date: 2019-04-11 09:20:32
-@LastEditTime: 2019-04-11 12:00:03
+@LastEditTime: 2019-04-11 12:30:45
 '''
 from collections import deque
 
@@ -43,8 +43,8 @@ def searchSeller(graph, name):
     @brief: 采用了BFS(广度优先搜索算法进行)
         首先利用字典构建有向图，其次利用队列的FIFO结构区分查找的层级关系，并利用一个列表记录已经查找过的人
         利用循环结构不断的进行查找判断，直至队列为空且人员全部查找完毕
-    @param {type} 
-    @return: 
+    @param {type}
+    @return:
     '''
 
     # 创建一个队列
@@ -53,9 +53,6 @@ def searchSeller(graph, name):
     search_queue += graph[name]
     # 记录检查过的人
     searched = []
-    # 记录队列添加的顺序
-    serchList = []
-    serchList.extend(graph[name])
 
     # 只要队列不为空,
     while search_queue:
@@ -65,16 +62,12 @@ def searchSeller(graph, name):
         if not person in searched:
             if personIsSeller(person):
                 print(person + ' is a mango seller!')
-                print(serchList)
-                return person,serchList
+                return person
             else:
                 # 如果不是芒果销售商，将这个人的朋友都加入到搜索队列中
                 search_queue += graph[person]
                 # 将这个人进行标记为已经检查过
                 searched.append(person)
-
-                # 记录本轮的添加顺序
-                serchList.extend(graph[person])
     return None
 
 
@@ -83,6 +76,31 @@ def personIsSeller(name):
     return name[-1] == 'm'
 
 
+def bfs(graph, start, end):
+    # 创建一个路径队列
+    pathQueue = []
+    # 创建路径保存列表
+    allpath = []
+    # 将第一条路径放入
+    pathQueue.append([start])
+    while pathQueue:
+        # 从路径队列中得到第一条路径
+        path = pathQueue.pop(0)
+        # 从路径中得到尾节点
+        node = path[-1]
+        # 路径寻找
+        if node == end:
+            return path
+        # 枚举所有相邻节点，构造新路径并将其推入队列
+        for adjacent in graph.get(node, []):
+            new_path = list(path)
+            new_path.append(adjacent)
+            pathQueue.append(new_path)
+    return allpath
+
+    
+    
 if __name__ == "__main__":
     graph = creatGraph()
-    searchSeller(graph, 'you')
+    
+    print(bfs(graph,'you',searchSeller(graph, 'you')))
