@@ -9,6 +9,7 @@ __pycache__/
 *.project
 05_HashTable/.settings/
 05_HashTable/Debug/
+**/*.md
 
 # Distribution / packaging
 .Python
