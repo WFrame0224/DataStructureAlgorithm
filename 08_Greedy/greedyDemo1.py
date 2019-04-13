@@ -6,7 +6,7 @@
 @Author: Frame
 @LastEditors: Frame
 @Date: 2019-04-13 11:22:33
-@LastEditTime: 2019-04-13 16:46:03
+@LastEditTime: 2019-04-13 16:53:14
 ----------------------------------------------------
 贪婪算法描述：
     每一步都采取局部最优解，最终得到的就是全局最优解
@@ -32,7 +32,15 @@ stations = {
 finalStations = set()
 
 def greedyDemo(statesNeeded,stations,finalStations):
-    
+    '''
+    @name: greedyDemo(...)
+    @brief: 寻找近似最优解
+    @param 
+            statesNeeded ：包含需要覆盖的州
+            stations ： 广播台
+            finalStations ： 用来存储最终选择的广播台
+    @return: finalStations
+    '''
     while statesNeeded:
         bestStation = None
         statesCovered = set()
