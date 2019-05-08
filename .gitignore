@@ -10,6 +10,8 @@ __pycache__/
 05_HashTable/.settings/
 05_HashTable/Debug/
 **/*.md
+**/*.vscode
+**/*.exe
 
 # Distribution / packaging
 .Python
