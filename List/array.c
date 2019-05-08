@@ -16,27 +16,27 @@
 typedef int Status;   /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
 typedef int ElemType; /* ElemType类型根据实际情况而定，这里假设为int */
 
-Status visit(ElemType c)
-{
-    printf("%d ", c);
-    return OK;
-}
-
 typedef struct
 {
     ElemType data[MAXSIZE]; /* 数组，存储数据元素 */
     int length;             /* 线性表当前长度 */
 } SqList;
 
+
+static Status visit(ElemType c)
+{
+    printf("%d ", c);
+    return OK;
+}
 /* 初始化顺序线性表 */
-Status InitList(SqList *L)
+Status InitArrayList(SqList *L)
 {
     L->length = 0;
     return OK;
 }
 
 /* 初始条件：顺序线性表L已存在。操作结果：若L为空表，则返回TRUE，否则返回FALSE */
-Status ListEmpty(SqList L)
+Status ArrayListEmpty(SqList L)
 {
     if (L.length == 0)
         return TRUE;
@@ -45,21 +45,21 @@ Status ListEmpty(SqList L)
 }
 
 /* 初始条件：顺序线性表L已存在。操作结果：将L重置为空表 */
-Status ClearList(SqList *L)
+Status ClearArrayList(SqList *L)
 {
     L->length = 0;
     return OK;
 }
 
 /* 初始条件：顺序线性表L已存在。操作结果：返回L中数据元素个数 */
-int ListLength(SqList L)
+int ArrayListLength(SqList L)
 {
     return L.length;
 }
 
 /* 初始条件：顺序线性表L已存在，1≤i≤ListLength(L) */
 /* 操作结果：用e返回L中第i个数据元素的值,注意i是指位置，第1个位置的数组是从0开始 */
-Status GetElem(SqList L, int i, ElemType *e)
+Status GetArrayElem(SqList L, int i, ElemType *e)
 {
     if (L.length == 0 || i < 1 || i > L.length)
         return ERROR;
@@ -71,7 +71,7 @@ Status GetElem(SqList L, int i, ElemType *e)
 /* 初始条件：顺序线性表L已存在 */
 /* 操作结果：返回L中第1个与e满足关系的数据元素的位序。 */
 /* 若这样的数据元素不存在，则返回值为0 */
-int LocateElem(SqList L, ElemType e)
+int LocateArrayElem(SqList L, ElemType e)
 {
     int i;
     if (L.length == 0)
@@ -89,7 +89,7 @@ int LocateElem(SqList L, ElemType e)
 
 /* 初始条件：顺序线性表L已存在,1≤i≤ListLength(L)， */
 /* 操作结果：在L中第i个位置之前插入新的数据元素e，L的长度加1 */
-Status ListInsert(SqList *L, int i, ElemType e)
+Status ArrayListInsert(SqList *L, int i, ElemType e)
 {
     int k;
     if (L->length == MAXSIZE) /* 顺序线性表已经满 */
@@ -110,7 +110,7 @@ Status ListInsert(SqList *L, int i, ElemType e)
 
 /* 初始条件：顺序线性表L已存在，1≤i≤ListLength(L) */
 /* 操作结果：删除L的第i个数据元素，并用e返回其值，L的长度减1 */
-Status ListDelete(SqList *L, int i, ElemType *e)
+Status ArrayListDelete(SqList *L, int i, ElemType *e)
 {
     int k;
     if (L->length == 0) /* 线性表为空 */
@@ -129,8 +129,9 @@ Status ListDelete(SqList *L, int i, ElemType *e)
 
 /* 初始条件：顺序线性表L已存在 */
 /* 操作结果：依次对L的每个数据元素输出 */
-Status ListTraverse(SqList L)
+Status ArrayListToString(SqList L)
 {
+    printf("This Array is:\n");
     int i;
     for (i = 0; i < L.length; i++)
         visit(L.data[i]);
@@ -138,16 +139,16 @@ Status ListTraverse(SqList L)
     return OK;
 }
 
-void unionL(SqList *La, SqList Lb)
+void unionArrayList(SqList *La, SqList Lb)
 {
     int La_len, Lb_len, i;
     ElemType e;
-    La_len = ListLength(*La);
-    Lb_len = ListLength(Lb);
+    La_len = ArrayListLength(*La);
+    Lb_len = ArrayListLength(Lb);
     for (i = 1; i <= Lb_len; i++)
     {
-        GetElem(Lb, i, &e);
-        if (!LocateElem(*La, e))
-            ListInsert(La, ++La_len, e);
+        GetArrayElem(Lb, i, &e);
+        if (!LocateArrayElem(*La, e))
+            ArrayListInsert(La, ++La_len, e);
     }
 }
