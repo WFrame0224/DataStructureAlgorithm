@@ -11,7 +11,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define MAXSIZE 20 /* 存储空间初始分配量 */
+#define MAXSIZE 20    /* 存储空间初始分配量 */
 typedef int Status;   /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
 typedef int ElemType; /* ElemType类型根据实际情况而定，这里假设为int */
 
@@ -182,8 +182,8 @@ void CreateListHead(LinkList *L, int n)
     (*L)->next = NULL; /*  先建立一个带头结点的单链表 */
     for (i = 0; i < n; i++)
     {
-        p = (LinkList)malloc(sizeof(Node)); /*  生成新结点 */
-        p->data = rand() % 100 + 1;         /*  随机生成100以内的数字 */
+        p = (Node *)malloc(sizeof(Node)); /*  生成新结点 */
+        p->data = rand() % 100 + 1;       /*  随机生成100以内的数字 */
         p->next = (*L)->next;
         (*L)->next = p; /*  插入到表头 */
     }
@@ -205,4 +205,30 @@ void CreateListTail(LinkList *L, int n)
         r = p;                            /* 将当前的新结点定义为表尾终端结点 */
     }
     r->next = NULL; /* 表示当前链表结束 */
+}
+/**
+ * @name: LinkListReverse(...)
+ * @brief: 反转链表
+ * @param {type} 
+ * @return: 
+ */
+LinkList ListReverse(LinkList *L)
+{
+    LinkList p = (*L)->next;
+    if (p == NULL || p->next == NULL) // 链表为空，或者仅有一个数据
+        return *L;
+
+    LinkList LNew = (LinkList)malloc(sizeof(Node));
+    LNew->next = NULL; // 先建立一个带头结点的空链
+
+    while (p!= NULL) // 一直遍历到链表尾部
+    {
+        (*L)->next = p->next; // 首先将首结点从原表中取下
+        p->next = LNew->next;
+        LNew->next = p; // 插入到表头
+        p = (*L)->next;    // 获取到下一个节点
+    }
+    // free(L);
+    L = &LNew;
+    return LNew;
 }

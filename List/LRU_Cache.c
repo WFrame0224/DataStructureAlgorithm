@@ -4,7 +4,7 @@
  * @Author: Frame
  * @LastEditTime: 2019-05-08 11:58:28
  * @Date: 2019-05-08 11:55:00
- * @LastEditTime: 2019-05-08 15:52:00
+ * @LastEditTime: 2019-05-08 21:50:42
  * ------------------------------------
  * LRU缓存淘汰算法思路
  *      1）维护一个有序的单链表，越靠近尾部的结点是越早之前访问的，热度是最小的
@@ -31,7 +31,7 @@
 
 #endif
 
-#define LRU_CACHE_SIZE 20 // LRU缓存区最大值
+#define LRU_CACHE_SIZE 50 // LRU缓存区最大值
 int LRUDataNum = 0;       // 缓存区已经缓存的元素个数
 
 #if LinkListUse
@@ -134,14 +134,16 @@ int main(void)
         LRUDataNum++;
     }
     ListToString(L);
-    // 更新缓存，已经存在的元素
-    LRU_Cache_BasedLinkList(&L, 6);
-    ListToString(L);
-    // 存入未存在的元素
-    LRU_Cache_BasedLinkList(&L, 11);
-    ListToString(L);
-    // 存入未存在的元素
-    LRU_Cache_BasedLinkList(&L, 12);
+    
+    // LRU_Cache_BasedLinkList(&L, 6);// 更新缓存，已经存在的元素
+    // ListToString(L);
+    
+    // LRU_Cache_BasedLinkList(&L, 11);// 存入未存在的元素
+    // ListToString(L);
+    
+    // LRU_Cache_BasedLinkList(&L, 12);// 存入未存在的元素
+    L = ListReverse(&L);
+    printf("-----执行链表反转----\n");
     ListToString(L);
 #endif
 
