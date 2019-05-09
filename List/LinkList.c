@@ -221,14 +221,30 @@ LinkList ListReverse(LinkList *L)
     LinkList LNew = (LinkList)malloc(sizeof(Node));
     LNew->next = NULL; // 先建立一个带头结点的空链
 
-    while (p!= NULL) // 一直遍历到链表尾部
+    while (p != NULL) // 一直遍历到链表尾部
     {
         (*L)->next = p->next; // 首先将首结点从原表中取下
         p->next = LNew->next;
         LNew->next = p; // 插入到表头
-        p = (*L)->next;    // 获取到下一个节点
+        p = (*L)->next; // 获取到下一个节点
     }
-    // free(L);
+    free(*L);
     L = &LNew;
+    return LNew;
+}
+LinkList ListReverse_1(LinkList *L)
+{
+    if ((*L) == NULL || (*L)->next == NULL)// 链表为空，或者仅有一个数据
+        return *L;
+    LinkList p = (*L)->next;
+    LinkList LNew = (LinkList)malloc(sizeof(Node));
+    LNew->next = NULL;
+    while (p != NULL)
+    {
+        LinkList tmp = p->next;
+        p->next = LNew->next;
+        LNew->next = p;
+        p = tmp;
+    }
     return LNew;
 }
