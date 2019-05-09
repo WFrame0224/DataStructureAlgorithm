@@ -248,3 +248,18 @@ LinkList ListReverse_1(LinkList *L)
     }
     return LNew;
 }
+/**
+ * @name: ListReverse_recursive(...)
+ * @brief: 采用递归方式进行反转
+ * @param {type} 
+ * @return: 
+ */
+LinkList ListReverse_recursive(LinkList L)
+{
+    if (L == NULL || L->next == NULL)// 链表为空，或者仅有一个数据
+        return L;
+    LinkList LNew = ListReverse_recursive(L->next);
+    L->next->next = L;
+    L->next = NULL;
+    return LNew;
+}
