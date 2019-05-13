@@ -4,7 +4,7 @@
  * @Author: Frame
  * @LastEditors: Frame
  * @Date: 2019-05-10 21:34:55
- * @LastEditTime: 2019-05-13 09:43:08
+ * @LastEditTime: 2019-05-13 11:26:29
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,12 +20,32 @@ typedef int Status; /* Status是函数的类型,其值是函数结果状态代�
 #define MAXSIZE 20 // 定义栈的最大值
 typedef int ElemType;
 
-typedef struct
+typedef struct sqstack
 {
     ElemType data[MAXSIZE];
     int top; // 栈顶指针
+    
+    // 采用函数指针模拟面向对象
+    Status (*init)(struct sqstack *);
+    Status (*clear)(struct sqstack *);
+    int (*isEmpty)(struct sqstack);
+    Status (*getTop)(struct sqstack, ElemType *);
+    Status (*push)(struct sqstack *, ElemType);
+    Status (*pop)(struct sqstack *, ElemType *);
+    int (*getLength)(struct sqstack);
+    Status (*toString)(struct sqstack);
 } SqStack;
 
+//---------------函数声明-------------------
+Status ClearStack(SqStack *S);
+int StackEmpty(SqStack S);
+Status GetTop(SqStack S, ElemType *e);
+Status GetTop(SqStack S, ElemType *e);
+Status Push(SqStack *S, ElemType e);
+Status Pop(SqStack *S, ElemType *e);
+int StackLength(SqStack S);
+Status StackTraverse(SqStack S);
+//-----------------------------------------
 /**
  * @name: InitStack(...)
  * @brief: 初始化操作，建立一个空栈
@@ -36,6 +56,15 @@ Status InitStack(SqStack *S)
 {
     memset(S->data, 0, MAXSIZE);
     S->top = -1;
+    
+    S->clear = ClearStack;
+    S->getLength = StackLength;
+    S->pop = Pop;
+    S->push = Push;
+    S->toString = StackTraverse;
+    S->isEmpty = StackEmpty;
+    S->getTop = GetTop;
+
     return OK;
 }
 /**
@@ -128,11 +157,7 @@ int StackLength(SqStack S)
 {
     return (S.top + 1);
 }
-Status visit(ElemType c)
-{
-    printf("%d ", c);
-    return OK;
-}
+
 /**
  * @name: StackTraverse()
  * @brief: 打印所有的元素
@@ -145,7 +170,7 @@ Status StackTraverse(SqStack S)
     i = 0;
     while (i <= S.top)
     {
-        visit(S.data[i++]);
+        printf("%d ", S.data[i++]);
     }
     printf("\n");
     return OK;
@@ -157,13 +182,13 @@ int main(void)
     SqStack S;
     ElemType e;
     InitStack(&S);
-    StackTraverse(S);
+    S.toString(S);
     for (int i = 0; i < MAXSIZE / 2; i++)
     {
-        Push(&S, i);
+        S.push(&S, i);
     }
-    StackTraverse(S);
-    GetTop(S,&e);
-    printf("栈顶元素：%d",e);
+    S.toString(S);
+    S.getTop(S, &e);
+    printf("栈顶元素：%d", e);
     return 0;
 }
