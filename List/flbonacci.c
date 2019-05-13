@@ -3,22 +3,28 @@
 #include <string.h>
 
 #include "stack_L.c"
+static int flboncaaiList[100];
 
-int flboncaai(int n)
+int flbonacci(int n)
 {
     if (n < 2)
     {
+        flboncaaiList[n] = n;
         return n == 0 ? 0 : 1;
     }
-    return flboncaai(n - 1) + flboncaai(n - 2);
+    flboncaaiList[n] = flbonacci(n - 1) + flbonacci(n - 2);
+    return flbonacci(n - 1) + flbonacci(n - 2);
 }
 
 int main(void)
 {
-    for(int i = 0; i < 12; i++)
-    {
-        printf("%d ",flboncaai(i));
-    }
+    int flbonacciNumberLength = 12;
+    flbonacci(flbonacciNumberLength);
     
+    for (int i = 0; i < flbonacciNumberLength; i++)
+    {
+        printf("%d ", flboncaaiList[i]);
+    }
+
     return 0;
 }
