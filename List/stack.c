@@ -4,18 +4,18 @@
  * @Author: Frame
  * @LastEditors: Frame
  * @Date: 2019-05-10 21:34:55
- * @LastEditTime: 2019-05-11 21:51:20
+ * @LastEditTime: 2019-05-13 09:43:08
  */
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
 
 #define OK 1
 #define ERROR 0
 #define TRUE 1
 #define FALSE 0
 
-typedef int Status;   /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
+typedef int Status; /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
 
 #define MAXSIZE 20 // 定义栈的最大值
 typedef int ElemType;
@@ -34,16 +34,8 @@ typedef struct
  */
 Status InitStack(SqStack *S)
 {
-    return OK;    
-}
-/**
- * @name: DestroyStack(...)
- * @brief: 若栈存在则销毁它
- * @param {type} 
- * @return: 
- */
-Status DestroyStack(SqStack *S)
-{
+    memset(S->data, 0, MAXSIZE);
+    S->top = -1;
     return OK;
 }
 /**
@@ -54,6 +46,11 @@ Status DestroyStack(SqStack *S)
  */
 Status ClearStack(SqStack *S)
 {
+    for (int i = 0; i < S->top + 1; i++)
+    {
+        S->data[i] = 0;
+    }
+    S->top = -1;
     return OK;
 }
 /**
@@ -64,6 +61,11 @@ Status ClearStack(SqStack *S)
  */
 int StackEmpty(SqStack S)
 {
+    if (S.top == -1)
+    {
+        return TRUE;
+    }
+
     return FALSE;
 }
 /**
@@ -72,8 +74,14 @@ int StackEmpty(SqStack S)
  * @param {type} 
  * @return: 
  */
-Status GetTop(SqStack S,ElemType *e)
+Status GetTop(SqStack S, ElemType *e)
 {
+    if (S.top == -1)
+    {
+        return ERROR;
+    }
+    *e = S.data[S.top];
+
     return OK;
 }
 /**
@@ -82,8 +90,16 @@ Status GetTop(SqStack S,ElemType *e)
  * @param {type} 
  * @return: 
  */
-Status Push(SqStack *S,ElemType e)
+Status Push(SqStack *S, ElemType e)
 {
+    // 如果栈满
+    if (S->top == MAXSIZE - 1)
+    {
+        return ERROR;
+    }
+    S->top++;            // 栈顶指针加1
+    S->data[S->top] = e; // 将元素压栈，赋值给栈顶空间
+
     return OK;
 }
 /**
@@ -92,8 +108,14 @@ Status Push(SqStack *S,ElemType e)
  * @param {type} 
  * @return: 
  */
-Status Pop(SqStack *S,ElemType e)
+Status Pop(SqStack *S, ElemType *e)
 {
+    if (S->top == -1) // 本身就是空栈
+    {
+        return ERROR;
+    }
+    *e = S->data[S->top]; // 取出栈顶元素
+    S->top--;             // 指针减
     return OK;
 }
 /**
@@ -104,12 +126,44 @@ Status Pop(SqStack *S,ElemType e)
  */
 int StackLength(SqStack S)
 {
-    return 0;
+    return (S.top + 1);
 }
-
+Status visit(ElemType c)
+{
+    printf("%d ", c);
+    return OK;
+}
+/**
+ * @name: StackTraverse()
+ * @brief: 打印所有的元素
+ * @param {type} 
+ * @return: 
+ */
+Status StackTraverse(SqStack S)
+{
+    int i;
+    i = 0;
+    while (i <= S.top)
+    {
+        visit(S.data[i++]);
+    }
+    printf("\n");
+    return OK;
+}
 
 //-------------------------------------------------
 int main(void)
 {
+    SqStack S;
+    ElemType e;
+    InitStack(&S);
+    StackTraverse(S);
+    for (int i = 0; i < MAXSIZE / 2; i++)
+    {
+        Push(&S, i);
+    }
+    StackTraverse(S);
+    GetTop(S,&e);
+    printf("栈顶元素：%d",e);
     return 0;
 }
