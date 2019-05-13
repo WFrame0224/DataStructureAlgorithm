@@ -1,10 +1,10 @@
 /*
- * @Descripttion: 栈的C语言实现,包括顺序存储和链表存储
+ * @Descripttion: 栈的C语言实现,顺序存储（数组实现）
  * @version: 
  * @Author: Frame
  * @LastEditors: Frame
  * @Date: 2019-05-10 21:34:55
- * @LastEditTime: 2019-05-13 11:26:29
+ * @LastEditTime: 2019-05-13 11:42:10
  */
 #include <stdlib.h>
 #include <stdio.h>
