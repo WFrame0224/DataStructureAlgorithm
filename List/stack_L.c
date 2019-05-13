@@ -4,7 +4,7 @@
  * @Author: Frame
  * @LastEditors: Frame
  * @Date: 2019-05-13 21:34:55
- * @LastEditTime: 2019-05-13 15:05:14
+ * @LastEditTime: 2019-05-13 15:27:04
  * ------------------------------
  * 注：链栈来讲，不需要头结点
  */
@@ -167,7 +167,7 @@ Status StackTraverse(LinkStack S)
 }
 
 //---------------------------------------------
-int main(void)
+static int TestDemo(void)
 {
     LinkStack S;
     ElemType e;
