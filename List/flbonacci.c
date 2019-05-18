@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 递归实现裴波那契数列
+ * @version: 
+ * @Author: Frame
+ * @LastEditors: Frame
+ * @Date: 2019-05-13 15:25:15
+ * @LastEditTime: 2019-05-18 09:48:55
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
