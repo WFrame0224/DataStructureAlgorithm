@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-05-25 13:43:44
  * @LastEditors: Frame
- * @LastEditTime: 2019-05-25 17:00:08
+ * @LastEditTime: 2019-05-25 17:11:02
  */
 
 #include "string.h"
@@ -19,7 +19,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define MAXSIZE 40 /* 存储空间初始分配量 */
+#define MAXSIZE 100 /* 存储空间初始分配量 */
 
 typedef int Status;   /* Status是函数的类型,其值是函数结果状态代码，如OK等 */
 typedef int ElemType; /* ElemType类型根据实际情况而定，这里假设为int */
@@ -94,28 +94,24 @@ Status ClearString(String S)
 Status Concat(String T, String S1, String S2)
 {
     int i = 0;
-    StrCopy(T, S1);
-    if (S1[0] + S2[0] > MAXSIZE) // 发生截断
-    {
-        for (i = 1; i < MAXSIZE - S2[0]; i++)
-        {
-            T[T[0] + i] = S2[i];
-        }
-        T[0] = MAXSIZE;
-        return FALSE;
-    }
-    else
-    {
-        //截断S2
-        for (i = 1; i <= S2[0]; i++)
-        {
-            T[T[0] + i] = S2[i];
-        }
-        T[0] = T[0] + S2[0];
-        return TRUE;
-    }
-
-    return TRUE;
+    if(S1[0]+S2[0]<=MAXSIZE)
+	{ /*  未截断 */
+		for(i=1;i<=S1[0];i++)
+			T[i]=S1[i];
+		for(i=1;i<=S2[0];i++)
+			T[S1[0]+i]=S2[i];
+		T[0]=S1[0]+S2[0];
+		return TRUE;
+	}
+	else
+	{ /*  截断S2 */
+		for(i=1;i<=S1[0];i++)
+			T[i]=S1[i];
+		for(i=1;i<=MAXSIZE-S1[0];i++)
+			T[S1[0]+i]=S2[i];
+		T[0]=MAXSIZE;
+		return FALSE;
+	}
 }
 
 /* 用Sub返回串S的第pos个字符起长度为len的子串。 */
@@ -283,7 +279,7 @@ int main(void)
 	String t,s1,s2;
 	printf("请输入串s1: ");
 	
-	k=StrAssign(s1,"abcd");
+	k=StrAssign(s1,"abcdefd");
 	if(!k)
 	{
 		printf("串长超过MAXSIZE(=%d)\n",MAXSIZE);
