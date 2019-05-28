@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-05-25 13:43:44
  * @LastEditors: Frame
- * @LastEditTime: 2019-05-25 17:11:02
+ * @LastEditTime: 2019-05-28 21:24:36
  */
 
 #include "string.h"
@@ -268,7 +268,7 @@ void StrPrint(String T)
     }
     printf("\n");
 }
-
+/*
 //----------------------------------------------
 int main(void)
 {
@@ -352,3 +352,4 @@ int main(void)
 	printf("用串s1取代串s2中和串t相同的不重叠的串后,串s2为: ");
 	StrPrint(s2);
 }
+*/
