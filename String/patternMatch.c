@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-05-28 21:19:26
  * @LastEditors: Frame
- * @LastEditTime: 2019-05-29 11:56:56
+ * @LastEditTime: 2019-05-29 16:21:32
  */
 #include "stdlib.h"
 #include "stdio.h"
@@ -67,7 +67,17 @@ void get_KMP_next(String T,int *next)
         //T[i]表示后缀的单个字符，T[j]表示前缀的单个字符
         if( j == 0 || T[i] == T[j])
         {
-            next[++i] = ++j;
+            ++i;
+            ++j;
+            // next[i] = j;
+            if(T[i] == T[j])//如果前缀字符相同
+            {
+                next[i] = next[j];
+            }
+            else
+            {
+                next[i] = j;
+            }
         }
         else
         {
@@ -106,10 +116,13 @@ int Index_KMP(String S, String T, int pos)
 int main(void)
 {
     char *s = "123456789";
-    char *t = "567";
+    char *t = "ababaaaba";
+    int next[255];
     String S,T;
     StrAssign(S,s);
     StrAssign(T,t);  
-    printf("找到的位置为第%d",findStr(S,T,6));
+    // printf("找到的位置为第%d",findStr(S,T,6));
+    get_KMP_next(T,next);
+    
     return 0;
 }
