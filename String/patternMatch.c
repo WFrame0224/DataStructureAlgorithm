@@ -4,11 +4,15 @@
  * @Author: Frame
  * @Date: 2019-05-28 21:19:26
  * @LastEditors: Frame
- * @LastEditTime: 2019-05-28 22:05:01
+ * @LastEditTime: 2019-05-29 11:56:56
  */
 #include "stdlib.h"
 #include "stdio.h"
 #include "myString.c"
+
+
+int findStr(String S, String T, int pos);
+void get_KMP_next(String T,int *next);
 
 /**朴素的模式匹配算法 算法时间复杂度O(n+m)
  * @name: findStr,同myString.c 中的index方法相同，重新提炼巩固一下
@@ -41,6 +45,60 @@ int findStr(String S, String T, int pos)
     }
     if (j > TLen)
         return i-TLen;
+    else
+        return 0;
+}
+/**
+ * @name: get_KMP_next
+ * @brief: 计算出KMP算法的next数组
+ * @param   
+ *          T：子串
+ *          next：next数组 
+ * @return: 
+ */
+void get_KMP_next(String T,int *next)
+{
+    int i = 1;
+    int j = 0;
+    int TLen = T[0];
+    next[1] = 0;
+    while (i < TLen)
+    {
+        //T[i]表示后缀的单个字符，T[j]表示前缀的单个字符
+        if( j == 0 || T[i] == T[j])
+        {
+            next[++i] = ++j;
+        }
+        else
+        {
+            j = next[j];// 如果字符不相同，则j值溯源
+        }
+    }
+}
+
+int Index_KMP(String S, String T, int pos)
+{
+    int i;
+    int j;
+    int SLen = S[0];
+    int TLen = T[0];
+    int next[255];
+    get_KMP_next(T,next);
+
+    while (i <= SLen && j<= TLen)
+    {
+        if (S[i] == T[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            j = next[i];//j回到指定位置，i不需要回溯了
+        }
+    }
+    if (j == TLen)
+        return i - TLen;
     else
         return 0;
 }
