@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-05-31 09:53:39
  * @LastEditors: Frame
- * @LastEditTime: 2019-05-31 16:44:39
+ * @LastEditTime: 2019-05-31 20:40:05
  * -----------------------------------
  * BM算法：
  *   包含两个部分：坏字符原则+好后缀原则
@@ -39,9 +39,11 @@
  * 当模式串和主串中的某个字符不匹配的时候，如何选择用好后缀规则还是坏字符规则？
  *      - 分别计算好后缀和坏字符往后滑动的位数
  *      - 然后取两个数中最大的，作为模式串往后滑动的位数，可以避免坏字符规则，计算得到的往后滑动位数为负数的情况
+ *      - 好后缀原则可以独立于坏字符原则，因为坏字符原则比较 耗费 内存
  * 
  */
 #include "string.h"
+#include "stdio.h"
 
 #define MAX_SIZE 255
 
@@ -55,6 +57,7 @@ typedef enum
 void generate_Bc(String T, int m, int TC[]);
 void generate_GS(String T, int m, int suffix[], Boolen prefix[]);
 int moveByGS(int j, int m, int suffix[], Boolen prefix[]);
+int Index_BM(String S, String T, int *index);
 /**
  * @name: generate_Bc
  * @brief: 模式串生成的简单散列表，存储模式串和模式串对应的下标
@@ -133,22 +136,37 @@ void generate_GS(String T, int m, int suffix[], Boolen prefix[])
  *        int *index：获取最后的索引
  * @return: 
  */
-void Index_BM(String S, String T, int *index)
+int Index_BM(String S, String T, int *index)
 {
     //求取主串和模式串的长度
     int n = strlen(S);
     int m = strlen(T);
     int i, j;
-    int TC[255];
-    int suffix[m], prefix[m];
+    int TC[255];// 记录模式串中每个字符最后出现的位置
+    int suffix[m];
+    Boolen prefix[m];
     int x, y; //分别记录坏字符原则，和好后缀原则对应的移动位置，取最大的那个
 
-    i = 0; //表示主串与模式串对齐的第一个字符
+    int z;
+    
     //生成坏字符的散列表
     generate_Bc(T, m, TC);
     //生成公共后缀子串数组suffix和对应的前缀子串prefix
     generate_GS(T, m, suffix, prefix);
+    
+    printf("suffix:");
+    for ( z = 1; z < m; z++)
+    {
+       printf("%d ",suffix[z]);
+    }
+    printf("\nprefix:");
+    for ( z = 1; z < m; z++)
+    {
+       printf("%d ",prefix[z]);
+    }
+    printf("\n");
 
+    i = 0; //表示主串与模式串对齐的第一个字符
     while (i <= n - m)
     {
         for (j = m - 1; j >= 0; j--) // 模式串从后往前匹配
@@ -161,7 +179,7 @@ void Index_BM(String S, String T, int *index)
         if (j < 0)
         {
             *index = i;
-            return; // 匹配成功返回主串与模式串第一个匹配的字符的位置
+            return i; // 匹配成功返回主串与模式串第一个匹配的字符的位置
         }
 
         //开始利用坏字符和好后缀原则进行滑动
@@ -173,11 +191,13 @@ void Index_BM(String S, String T, int *index)
         {
             y = moveByGS(j, m, suffix, prefix);
         }
+        printf("i0=%d ",i);
         // 两种原则中取最大值，得到最终的移动位置
-        i = i + (y > x ? y : x);
+        i = i + (y >= x ? y : x);
+        printf("i=%d,x=%d,y=%d\n",i,x,y);
     }
     *index = -1;// 没有符合的子串
-    return;
+    return -1;
 }
 /**
  * @name: moveByGS
@@ -200,7 +220,6 @@ int moveByGS(int j, int m, int suffix[], Boolen prefix[])
 {
     int r;
     int k = m - 1 - j; //好后缀的长度
-    int y = 0;
     if (suffix[k] != -1)
     {
         return (j - suffix[k] + 1);
@@ -212,11 +231,17 @@ int moveByGS(int j, int m, int suffix[], Boolen prefix[])
         {
             return r; //模式串后移 r 位
         }
-        return m; // 模式串中不存在有可匹配的前缀子串，模式串后移 m 位
     }
+    return m; // 模式串中不存在有可匹配的前缀子串，模式串后移 m 位
 }
 
 int main(void)
 {
+    String S = {'c','a','b','c','a','c','a','x','y','z','c','a','b','c','a'};
+    String T = {'c','a','b','c','a'};
+    int index = -1;
+    printf("S:%s,SLen=%lld\nT:%s,TLen=%lld\n",S,strlen(S),T,strlen(T));
+    Index_BM(S,T,&index);
+    printf("Index：%d\r\n",index);
     return 0;
 }
