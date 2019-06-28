@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-06-28 20:58:35
+ * @LastEditTime: 2019-06-28 21:32:02
  */
 #include "stdio.h"
 #include "stdlib.h"
@@ -13,10 +13,10 @@
  * @name: SelectSort
  * @brief: 选择排序
  *      特点：
- *          时间复杂度：O(n^2)，最好情况O(n),最坏情况O(n^2)，平均情况O(n^2) 
+ *          时间复杂度：O(n^2)，最好情况O(n^2),最坏情况O(n^2)，平均情况O(n^2) 
  *          基于比较的排序
  *          空间复杂度是O(1)，属于原地排序算法
- *          是稳定的排序算法，对于值相同的元素，我么可以选择将后面出现的元素，插入到前面出现元素的后面
+ *          是 不稳定 的排序算法，因为不是相邻元素交换位置
  * @param 
  *          int arr[]   :待排序数组 
  *          int n       :数组长度
@@ -24,7 +24,29 @@
  */
 void SelectSort(int arr[], int n)
 {
+    //i表示从每一次寻找最小的元素，j表示从未排序数组中寻找最小元素的游标
+    int i,j;
+    //存储最小的元素
+    int min;
+    int minIndex;
     
+    // 总共要经过 N-1 轮比较，最后一次未排序的区间就剩一个元素了，还比较个屁，所以是N-1
+    for ( i = 0; i < n-1; i++)
+    {
+        minIndex = i;
+        //从未排序数组中寻找最小值
+        for ( j = i+1; j < n; j++)
+        {
+            if (min > arr[j])
+            {
+                min = arr[j];
+                minIndex = j;
+            } 
+        }
+        //将最小值放置到已排序数组末尾，并原本的元素放置在取出的元素位置
+        arr[minIndex] = arr[i];
+        arr[i] = min;   
+    }   
 }
 
 /**
@@ -137,8 +159,12 @@ int main(void)
     // BubbleSort(arr, arrLen);
     // ArrayToString(arr, arrLen);
 
-    printf("插入排序之后的数组为：\r\n");
-    InsertSort(arr, arrLen);
+    // printf("插入排序之后的数组为：\r\n");
+    // InsertSort(arr, arrLen);
+    // ArrayToString(arr, arrLen);
+
+    printf("选择排序之后的数组为：\r\n");
+    SelectSort(arr, arrLen);
     ArrayToString(arr, arrLen);
 
     return 0;
