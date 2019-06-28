@@ -4,24 +4,75 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-06-28 16:27:09
+ * @LastEditTime: 2019-06-28 17:36:45
  */
 #include "stdio.h"
 #include "stdlib.h"
 
 /**
- * @name: BubbleSort
- * @brief: 冒泡排序
+ * @name: InsertSort
+ * @brief: 插入排序
  *      特点：
- *          时间复杂度：O(n^2)
+ *          时间复杂度：O(n^2)，最好情况O(n),最坏情况O(n^2)，平均情况O(n^2) (平均情况需要交换n*(n-1)/4)
  *          基于比较的排序
  *          空间复杂度是O(1)，属于原地排序算法
  *          是稳定的排序算法，相等元素不交换位置即可
- * @param {type} 
+ * @param 
+ *          int arr[]   :待排序数组 
+ *          int n       :数组长度
+ * @return: 
+ */
+void InsertSort(int arr[], int n)
+{
+    //i为有序数组的上限下标，j表示从有序数组中寻找插入位置的游标
+    int i, j;
+    //从无序数组分区中取出待插入有序数组中的元素
+    int insertTemp;
+    //插入位置
+    int insertIndex;
+
+    for (i = 1; i < n; i++)
+    {
+        //i为有序数组的上限，i+1为无序数组的第一个元素
+        insertTemp = arr[i];
+        //初始化插入位置
+        insertIndex = i;
+        //从有序数组(0~i)中寻找位置
+        for (j = 0; j < i; j++)
+        {
+            //升序，小的往前插
+            if (insertTemp < arr[j])
+            {
+                insertIndex = j;
+                break;
+            }
+        }
+        //移动元素，空出插入位置
+        for (j = i - 1; j >= insertIndex; j--)
+        {
+            arr[j+1] = arr[j];
+        }
+        //将空出的位置，填充要插入的元素
+        arr[insertIndex] = insertTemp;
+    }
+}
+
+/**
+ * @name: BubbleSort
+ * @brief: 冒泡排序
+ *      特点：
+ *          时间复杂度：O(n^2)，最好情况O(n),最坏情况O(n^2)，平均情况O(n^2) (平均情况需要交换n*(n-1)/4)
+ *          基于比较的排序
+ *          空间复杂度是O(1)，属于原地排序算法
+ *          是稳定的排序算法，相等元素不交换位置即可
+ * @param 
+ *          int arr[]   :待排序数组 
+ *          int n       :数组长度
  * @return: 
  */
 void BubbleSort(int arr[], int n)
 {
+    //i是冒泡次数=逆序度（加标志），j是每次冒泡的游标
     int i, j;
     int temp;
     //记录某次冒泡是否需要进行数据交换
@@ -32,11 +83,11 @@ void BubbleSort(int arr[], int n)
         for (j = 0; j < n - 1 - i; j++)
         {
             //判断是否需要交换
-            if (arr[j] > arr[j+1])
+            if (arr[j] > arr[j + 1])
             {
                 temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
                 //表示有数据交换
                 swapFlag = 1;
             }
@@ -46,7 +97,6 @@ void BubbleSort(int arr[], int n)
         {
             break;
         }
-        
     }
 }
 
@@ -61,13 +111,17 @@ void ArrayToString(int arr[], int n)
 
 int main(void)
 {
-    int arr[] = {4, 5, 3, 1, 6, 2, 7};
+    int arr[] = {4, 5, 6, 1, 3, 2};
     int arrLen = (int)sizeof(arr) / sizeof(arr[0]);
     printf("未排序的数组为：\r\n");
     ArrayToString(arr, arrLen);
 
-    printf("冒泡排序之后的数组为：\r\n");
-    BubbleSort(arr, arrLen);
+    // printf("冒泡排序之后的数组为：\r\n");
+    // BubbleSort(arr, arrLen);
+    // ArrayToString(arr, arrLen);
+
+    printf("插入排序之后的数组为：\r\n");
+    InsertSort(arr, arrLen);
     ArrayToString(arr, arrLen);
 
     return 0;
