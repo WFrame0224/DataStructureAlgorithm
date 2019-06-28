@@ -4,19 +4,37 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-06-28 17:36:45
+ * @LastEditTime: 2019-06-28 20:58:35
  */
 #include "stdio.h"
 #include "stdlib.h"
 
 /**
+ * @name: SelectSort
+ * @brief: 选择排序
+ *      特点：
+ *          时间复杂度：O(n^2)，最好情况O(n),最坏情况O(n^2)，平均情况O(n^2) 
+ *          基于比较的排序
+ *          空间复杂度是O(1)，属于原地排序算法
+ *          是稳定的排序算法，对于值相同的元素，我么可以选择将后面出现的元素，插入到前面出现元素的后面
+ * @param 
+ *          int arr[]   :待排序数组 
+ *          int n       :数组长度
+ * @return: 
+ */
+void SelectSort(int arr[], int n)
+{
+    
+}
+
+/**
  * @name: InsertSort
  * @brief: 插入排序
  *      特点：
- *          时间复杂度：O(n^2)，最好情况O(n),最坏情况O(n^2)，平均情况O(n^2) (平均情况需要交换n*(n-1)/4)
+ *          时间复杂度：O(n^2)，最好情况O(n),最坏情况O(n^2)，平均情况O(n^2) 
  *          基于比较的排序
  *          空间复杂度是O(1)，属于原地排序算法
- *          是稳定的排序算法，相等元素不交换位置即可
+ *          是稳定的排序算法，对于值相同的元素，我么可以选择将后面出现的元素，插入到前面出现元素的后面
  * @param 
  *          int arr[]   :待排序数组 
  *          int n       :数组长度
@@ -28,32 +46,31 @@ void InsertSort(int arr[], int n)
     int i, j;
     //从无序数组分区中取出待插入有序数组中的元素
     int insertTemp;
-    //插入位置
     int insertIndex;
-
+    
     for (i = 1; i < n; i++)
     {
         //i为有序数组的上限，i+1为无序数组的第一个元素
         insertTemp = arr[i];
-        //初始化插入位置
-        insertIndex = i;
-        //从有序数组(0~i)中寻找位置
-        for (j = 0; j < i; j++)
+        //初始化插入位置，它的前一位
+        j = i-1;
+        //从有序数组(0~i)中寻找位置,倒着来寻找，
+        //如果比较一次，不是可插入的位置，则元素向后移动一次，时间消耗更少
+        for (; j >= 0; j--)
         {
             //升序，小的往前插
-            if (insertTemp < arr[j])
+            if (arr[j] > insertTemp)
             {
-                insertIndex = j;
+                //后移元素
+                arr[j + 1] = arr[j];
+            }
+            else//找到插入位置,跳出循环
+            {
                 break;
             }
         }
-        //移动元素，空出插入位置
-        for (j = i - 1; j >= insertIndex; j--)
-        {
-            arr[j+1] = arr[j];
-        }
         //将空出的位置，填充要插入的元素
-        arr[insertIndex] = insertTemp;
+        arr[j+1] = insertTemp;
     }
 }
 
