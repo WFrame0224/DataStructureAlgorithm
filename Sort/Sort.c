@@ -4,23 +4,96 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-01 15:31:47
+ * @LastEditTime: 2019-07-01 17:16:46
  */
 #include "stdio.h"
 #include "stdlib.h"
 
+void QuickSort_C(int arr[], int p, int r);
+int Partition(int arr[], int p, int r);
+
 void MergeSort_C(int arr[], int p, int r);
 void Merge(int arr[], int p, int q, int r);
 
+/**
+ * @name: QuickSort
+ * @brief: 快速排序
+ *      思想：
+ *          如果要排序数组中下标从 p 到 r 之间的一组数据，我们选择 p 到 r 之间任意一个数据作为分区点 pivot
+ *          我们遍历 p 到 r 之间的数据，将小于pivot放到左边，将大于pivot放到右边，将pivot放到中间，经过这一步，
+ *      数据被分为三个部分，前面 p 到q-1 之间都是小于pivot，后面q+1到r之间的是大于pivot的，中间的是pivot，
+ *      根据分治的思想，我们可以递归排序从（p~q-1）和（q+1,r）之间的数据，直至区间为1
+ *      特点：
+ *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(n^2)，平均情况O(n^2) 
+ *          空间复杂度是O(1)，属于原地排序算法
+ *          是 不稳定 的排序算法
+ * @param 
+ *          int arr[]   :待排序数组 
+ *          int n       :数组长度
+ * @return: 
+ */
+void QuickSort(int arr[], int n)
+{
+    QuickSort_C(arr, 0, n - 1);
+}
+/**
+ * @name: MergeSort_C
+ * @brief: 快速排序递归调用函数
+ *      递推公式：
+ *          quick_sort(p..r) = quick_sort(p..q_1) + quick_sort(q+1,r)
+ *      终止条件
+ *          p >= r
+ * @param 
+ *          int arr[]:需要排序的数组
+ *          int p，int r:下标从p到r进行排序
+ * @return: 
+ */
+void QuickSort_C(int arr[], int p, int r)
+{
+    //终止条件
+    if (p >= r)
+        return;
+    //获取分区点
+    int pivot = Partition(arr, p, r);
+    QuickSort_C(arr,p,pivot-1);
+    QuickSort_C(arr,pivot+1,r);
+}
+/**
+ * 寻找分区点，返回其下标
+ * 使用的是原地分区算法，类似插入排序
+ */
+int Partition(int arr[], int p, int r)
+{
+    int i=p,j=p;
+    int pivot = arr[r];
+    int temp;
+    //arr[p,i-1]都是小于pivot的，成为已处理区间，arr[i,r-1]是未处理区间，每次从未处理区间取一个数加入已处理区间尾部
+    for ( ; j <= r-1; j++)
+    {
+        if (arr[j] < pivot)
+        {
+            //交换arr[i]和arr[j]
+            temp = arr[j];
+            arr[j] = arr[i];
+            arr[i] = temp;
+            
+            //已排序数组加1
+            i++;   
+        } 
+    }
+    //将pivot最后插入到i的位置
+    arr[r] = arr[i];
+    arr[i] = pivot;
+    return i;
+}
 /**
  * @name: MergeSort
  * @brief: 归并排序--分治思想
  *      要排序一个数组，我们先把数组从中间分成前后两个部分，然后后对前后两个部分分别排序，
  * 再将排序好的两个部分合并在一起，这样整个数组就有序了
  *      特点：
- *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(nlogn)，平均情况O(nlogn) 
- *          基于比较的排序
- *          空间复杂度是O(1)，属于原地排序算法
+ *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(nlogn)，平均情况O(nlogn) ，任何情况下都是O(nlogn)
+ *          需要临时temp空间，不属于原地排序算法
  *          是 稳定 的排序算法
  * @param 
  *          int arr[]   :待排序数组 
@@ -33,7 +106,7 @@ void MergeSort(int arr[], int n)
 }
 /**
  * @name: MergeSort_C
- * @brief: 递归调用函数
+ * @brief: 归并排序递归调用函数
  *      递推公式：
  *              Merge_Sort(p...r) = Merge( Merge_Sort(p..q),Merge_Sort(q..r))
  *      终止条件：
@@ -66,52 +139,25 @@ void Merge(int arr[], int p, int q, int r)
     //创建一个大小为r-q的临时数组
     int *temp = (int *)malloc((r - p) * sizeof(int));
 
+    //借助临时数组，小的就先往临时数组中放，已经放入之后，自增
     while (start1 <= end1 && start2 <= end2)
     {
         temp[k++] = arr[start1] <= arr[start2] ? arr[start1++] : arr[start2++];
-/**
-        if (arr[start1] <= arr[start2])
-        {
-            temp[k++] = arr[start1++];
-        }
-        else
-        {
-            temp[k++] = arr[start2++];
-        }
-*/
     }
     //把子数组中剩余的数给加上去
-    while (start1<=end1)
+    while (start1 <= end1)
     {
         temp[k++] = arr[start1++];
     }
-    while (start2<=end2)
+    while (start2 <= end2)
     {
         temp[k++] = arr[start2++];
     }
-    for ( k = 0; k <= r-p; k++)
+    for (k = 0; k <= r - p; k++)
     {
-        arr[p+k] = temp[k];
+        arr[p + k] = temp[k];
     }
     free(temp);
-    
-}
-
-/**
- * @name: QuickSort
- * @brief: 快速排序
- *      特点：
- *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(n^2)，平均情况O(n^2) 
- *          基于比较的排序
- *          空间复杂度是O(1)，属于原地排序算法
- *          是 不稳定 的排序算法，因为不是相邻元素交换位置
- * @param 
- *          int arr[]   :待排序数组 
- *          int n       :数组长度
- * @return: 
- */
-void QuickSort(int arr[], int n)
-{
 }
 
 /**
@@ -272,8 +318,13 @@ int main(void)
     // SelectSort(arr, arrLen);
     // ArrayToString(arr, arrLen);
 
-    printf("归并排序之后的数组为：\r\n");
-    MergeSort(arr, arrLen);
+    // printf("归并排序之后的数组为：\r\n");
+    // MergeSort(arr, arrLen);
+    // ArrayToString(arr, arrLen);
+
+    printf("选择排序之后的数组为：\r\n");
+    QuickSort(arr, arrLen);
     ArrayToString(arr, arrLen);
+
     return 0;
 }
