@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-01 14:46:37
+ * @LastEditTime: 2019-07-01 15:31:47
  */
 #include "stdio.h"
 #include "stdlib.h"
@@ -18,10 +18,10 @@ void Merge(int arr[], int p, int q, int r);
  *      要排序一个数组，我们先把数组从中间分成前后两个部分，然后后对前后两个部分分别排序，
  * 再将排序好的两个部分合并在一起，这样整个数组就有序了
  *      特点：
- *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(n^2)，平均情况O(n^2) 
+ *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(nlogn)，平均情况O(nlogn) 
  *          基于比较的排序
  *          空间复杂度是O(1)，属于原地排序算法
- *          是 不稳定 的排序算法，因为不是相邻元素交换位置
+ *          是 稳定 的排序算法
  * @param 
  *          int arr[]   :待排序数组 
  *          int n       :数组长度
@@ -61,36 +61,39 @@ void MergeSort_C(int arr[], int p, int r)
  */
 void Merge(int arr[], int p, int q, int r)
 {
-    int i = p, j = q + 1;
+    int start1 = p, start2 = q + 1, end1 = q, end2 = r;
     int k = 0;
     //创建一个大小为r-q的临时数组
-    int* temp = (int*)malloc((r-p)*sizeof(int));
-    while (i <= q && j <= r)
+    int *temp = (int *)malloc((r - p) * sizeof(int));
+
+    while (start1 <= end1 && start2 <= end2)
     {
-        if (arr[i]<=arr[j])
+        temp[k++] = arr[start1] <= arr[start2] ? arr[start1++] : arr[start2++];
+/**
+        if (arr[start1] <= arr[start2])
         {
-            temp[k++] = arr[j++];
+            temp[k++] = arr[start1++];
         }
         else
         {
-            temp[k++] = arr[i++];
+            temp[k++] = arr[start2++];
         }
+*/
     }
-    //判断哪个子数组中有剩余的数据
-    int start = i, end = q;
-    if (j <= r)
+    //把子数组中剩余的数给加上去
+    while (start1<=end1)
     {
-        start = j;
-        end = r;
+        temp[k++] = arr[start1++];
     }
-    while (start <= end)
+    while (start2<=end2)
     {
-        temp[k++] = arr[start++];
+        temp[k++] = arr[start2++];
     }
-    for ( i = 0; i <= r-p; i++)
+    for ( k = 0; k <= r-p; k++)
     {
-        arr[p+i] = temp[i]; 
+        arr[p+k] = temp[k];
     }
+    free(temp);
     
 }
 
