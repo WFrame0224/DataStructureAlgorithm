@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-06 16:50:49
+ * @LastEditTime: 2019-07-06 17:46:28
  */
 #include "stdio.h"
 #include "stdlib.h"
@@ -18,7 +18,35 @@ int Partition(int arr[], int p, int r);
 void MergeSort_C(int arr[], int p, int r);
 void Merge(int arr[], int p, int q, int r);
 
-void CountingSort(int arr[], int n);
+
+/**
+ * @name: BucketSort
+ * @brief: 桶排序
+ *      思想：
+ *          核心思想是将要排序的数据分到几个有序的桶里，每个桶里的数据再单独进行排序，
+ *      桶内排序完成后，再把每个桶里数据按照顺序依次取出，组成的序列就是有序的了。
+ *      
+ *      比较关键的一点是映射函数的确定，即将元素放入桶中的映射，为了使得桶排序更加高效，我们需要做到下面两点：
+ *      （1）在额外空间充足的情况下，尽量增加桶的数量
+ *      （2）使用的映射函数能够将输入的N个数据均分的分配到K个桶中
+ *      特点：
+ *          时间复杂度：O(n) ，
+ *          最好情况，输入的数据被均匀的分配到每一个桶中O(n)
+ *          最坏的情况，输入的数据被分配到了同一个桶中o(nlogn)
+ * 
+ *          是 稳定 的排序算法，必须从数组后面插入临时数组，才能保证
+ *      限制条件:
+ *          堆排序比较适合用在外部排序中（数据存储在外部磁盘中，数据量比较大，内存有限，无法将数据全部加载到内存中）
+ *          数据范围不能太大
+ * @param 
+ *          int arr[]   :待排序数组 
+ *          int n       :数组长度
+ * @return: 
+ */
+void BucketSort(int arr[],int n)
+{
+    
+}
 
 /**
  * @name: CountingSort
@@ -33,7 +61,7 @@ void CountingSort(int arr[], int n);
  *      （4）反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1
  *      特点：
  *          时间复杂度：O(n) 
- *          是 稳定 的排序算法
+ *          是 稳定 的排序算法,必须从数组后面插入临时数组，才能保证
  *      限制条件:
  *          计数排序只能用在数据范围不大的场景中，如果数据范围k要比排序的数据n大很多，就不合适用计数排序了
  *          计数排序只能给非负整数排序，如果要排序的数据是其他类型的，要将其在不改变相对大小的情况下，转化为非负整数
@@ -45,9 +73,11 @@ void CountingSort(int arr[], int n);
 void CountingSort(int arr[], int n)
 {
     int MAX = arr[0];
+    int MIN = arr[0];
     int i = 0;
     char sameFlag = 0; // 判断是否是相同元素的标志位
     int *countArr;
+    int countArr_Len = 0;
     int *decArr;
     int index = 0;
     //查找需要排序的数组的范围
@@ -57,17 +87,22 @@ void CountingSort(int arr[], int n)
         {
             MAX = arr[i];
         }
+        if (MIN > arr[i])
+        {
+            MIN = arr[i];
+        }
     }
+    countArr_Len = MAX-MIN+1;
     //创建计数数组，分成MAX个大小的区域,并初始化
-    countArr = (int *)malloc(sizeof(int) * (MAX+1));
-    memset(countArr,0,sizeof(int) * (MAX+1));
+    countArr = (int *)malloc(sizeof(int) * countArr_Len);
+    memset(countArr,0,sizeof(int) * countArr_Len);
     //填充计数数组,当前存储的是数量
     for (i = 0; i < n; i++)
     {
         countArr[arr[i]] += 1;
     }
     //填充计数数组，最后存储的是计数和
-    for ( i = 1; i <= MAX; i++)
+    for ( i = 1; i < countArr_Len; i++)
     {
         countArr[i] += countArr[i-1];
     }
