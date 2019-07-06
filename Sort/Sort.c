@@ -4,20 +4,21 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-06 17:46:28
+ * @LastEditTime: 2019-07-06 21:07:54
  */
 #include "stdio.h"
 #include "stdlib.h"
 #include <string.h>
+#include <math.h>
 
 void ArrayToString(int arr[], int n);
 
+void QuickSort(int arr[], int n);
 void QuickSort_C(int arr[], int p, int r);
 int Partition(int arr[], int p, int r);
 
 void MergeSort_C(int arr[], int p, int r);
 void Merge(int arr[], int p, int q, int r);
-
 
 /**
  * @name: BucketSort
@@ -43,9 +44,65 @@ void Merge(int arr[], int p, int q, int r);
  *          int n       :数组长度
  * @return: 
  */
-void BucketSort(int arr[],int n)
+void BucketSort(int arr[], int n)
 {
-    
+    int MAX = arr[0];
+    int MIN = arr[0];
+    int i = 0, j = 0;
+    //桶的数量
+    int bucketNum = 0;
+    //每个桶的元素个数
+    int bucketSize = 10;
+    //创建桶数组，二维数组，行表示一不同的桶，列表示桶内不同的元素
+    int **bucketArr;
+    //每个元素存储的是存放入桶中元素的数量
+    int buckIndex[10] = {0};
+    int index = 0;
+
+    //查找需要排序的数组的范围
+    for (i = 0; i < n; i++)
+    {
+        if (MAX < arr[i])
+        {
+            MAX = arr[i];
+        }
+        if (MIN > arr[i])
+        {
+            MIN = arr[i];
+        }
+    }
+    //得到桶的数量
+    bucketNum = (int)floor((MAX - MIN) / bucketSize) + 1;
+    //动态申请桶的数量
+    bucketArr = (int **)malloc(sizeof(int *) * bucketNum);
+    for (i = 0; i < bucketNum; i++)
+    {
+        bucketArr[i] = (int *)malloc(sizeof(int) * bucketSize);
+    }
+    //将全部元素放入桶中
+    for (i = 0; i < n; i++)
+    {
+        //得到应该存放的桶
+        index = (int)floor((arr[i] - MIN) / bucketSize);
+        //放入桶中
+        bucketArr[index][buckIndex[index]++] = arr[i];
+    }
+    //将桶中的元素进行排序
+    for (i = 0; i < bucketNum; i++)
+    {
+        QuickSort(bucketArr[i], buckIndex[i]);
+        //将桶中的元素依次取出
+        for (j = 0; j < buckIndex[i]; j++)
+        {
+            arr[i+j] = bucketArr[i][j];
+        }
+    }
+    //释放缓存区
+    for ( i = 0; i < bucketNum; i++)
+    {
+        free(bucketArr[i]);
+    }
+    free(bucketArr); 
 }
 
 /**
@@ -55,7 +112,7 @@ void BucketSort(int arr[],int n)
  *          计数排序是桶排序的特殊情况，当要排序的n个数据，所处的范围并不大的时候，比如最大值是k,我们就把数据
  *  划分为K个桶，每个桶内的数据值都是相同的，省掉了桶内的排序的时间
  *      步骤：
- *      （1）找出待排序的数组中最大和最小的元素
+ *      （1）找出待排序的数组中最大和最小的元素，计数数组长度 = MAX-MIN+1
  *      （2）统计数组中每个值为i的元素出现的次数，存入数组C的第i项
  *      （3）对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）
  *      （4）反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1
@@ -75,7 +132,6 @@ void CountingSort(int arr[], int n)
     int MAX = arr[0];
     int MIN = arr[0];
     int i = 0;
-    char sameFlag = 0; // 判断是否是相同元素的标志位
     int *countArr;
     int countArr_Len = 0;
     int *decArr;
@@ -92,42 +148,41 @@ void CountingSort(int arr[], int n)
             MIN = arr[i];
         }
     }
-    countArr_Len = MAX-MIN+1;
+    countArr_Len = MAX - MIN + 1;
     //创建计数数组，分成MAX个大小的区域,并初始化
     countArr = (int *)malloc(sizeof(int) * countArr_Len);
-    memset(countArr,0,sizeof(int) * countArr_Len);
+    memset(countArr, 0, sizeof(int) * countArr_Len);
     //填充计数数组,当前存储的是数量
     for (i = 0; i < n; i++)
     {
         countArr[arr[i]] += 1;
     }
     //填充计数数组，最后存储的是计数和
-    for ( i = 1; i < countArr_Len; i++)
+    for (i = 1; i < countArr_Len; i++)
     {
-        countArr[i] += countArr[i-1];
+        countArr[i] += countArr[i - 1];
     }
     //开始存放一个数组
-    decArr = (int*)malloc(sizeof(int) * n);
-    
+    decArr = (int *)malloc(sizeof(int) * n);
+
     //存放至目标数组
-    for ( i = n-1; i >=0; i--)
+    for (i = n - 1; i >= 0; i--)
     {
         //从计数数组中得到存放的位置
-        index = countArr[arr[i]]-1;
-        
+        index = countArr[arr[i]] - 1;
+
         decArr[index] = arr[i];
         //更新计数数组
-        countArr[arr[i]] -=1;
+        countArr[arr[i]] -= 1;
     }
     //取出存放入原数组中
-    for ( i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
         arr[i] = decArr[i];
     }
     //释放之前申请的内存
     free(countArr);
     free(decArr);
-    
 }
 
 /**
@@ -441,8 +496,12 @@ int main(void)
     // QuickSort(arr, arrLen);
     // ArrayToString(arr, arrLen);
 
-    printf("计数排序之后的数组为：\r\n");
-    CountingSort(arr, arrLen);
+    // printf("计数排序之后的数组为：\r\n");
+    // CountingSort(arr, arrLen);
+    // ArrayToString(arr, arrLen);
+
+    printf("桶排序之后的数组为：\r\n");
+    BucketSort(arr, arrLen);
     ArrayToString(arr, arrLen);
 
     return 0;
