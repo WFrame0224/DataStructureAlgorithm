@@ -4,13 +4,21 @@
  * @Author: Frame
  * @Date: 2019-07-21 13:43:50
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-21 14:32:31
+ * @LastEditTime: 2019-07-21 14:40:15
+ * ----------------------------------
+ * 注意点：
+ *      1）非递归版本的循环条件是low<=high,而不是low<high,放置上边界的遗漏
+ *      2）mid = low+((high-low)>>1),可放置溢出且性能极致
+ *      3）low和high的更新，low = mid+1,high = mid-1
+ * 应用场景的局限性：
+ *      1）二分查找依赖额是顺序结构，因二分查找算法需要按照下标随机访问元素，链表存储采用二分查找时间福在读会大大增加
+ *      2）二分查找针对的是有序数组，且插入，删除操作不频繁一次排序多次查找的场景中
+ *      3）数据量很小，完全没有必要使用二分查找，数据太大，内存有限制的场合，二分查找也不适合
  */
 #include <stdio.h>
 #include <stdlib.h>
 
-int BSearchInternally(int arr[],int low,int high,int value);
-
+int BSearchInternally(int arr[], int low, int high, int value);
 
 /**
  * @name: BinarySearchRecursion
@@ -22,11 +30,11 @@ int BSearchInternally(int arr[],int low,int high,int value);
  */
 int BinarySearchRecursion(int arr[], int n, int value)
 {
-    return BSearchInternally(arr,0,n-1,value);
+    return BSearchInternally(arr, 0, n - 1, value);
 }
-int BSearchInternally(int arr[],int low,int high,int value)
+int BSearchInternally(int arr[], int low, int high, int value)
 {
-    int mid = mid = low + (int)((high - low)>>1);
+    int mid = mid = low + (int)((high - low) >> 1);
     if (low > high)
     {
         return -1;
@@ -34,12 +42,14 @@ int BSearchInternally(int arr[],int low,int high,int value)
     if (value == arr[mid])
     {
         return mid;
-    }else if (value > arr[mid])
+    }
+    else if (value > arr[mid])
     {
-        return BSearchInternally(arr,mid+1,high,value);
-    }else
+        return BSearchInternally(arr, mid + 1, high, value);
+    }
+    else
     {
-        return BSearchInternally(arr,low,mid-1,value);
+        return BSearchInternally(arr, low, mid - 1, value);
     }
 }
 
@@ -55,14 +65,14 @@ int BSearchInternally(int arr[],int low,int high,int value)
 int BinarySearchBase(int arr[], int n, int value)
 {
     int low = 0, high = n - 1;
-    int mid = low + (int)((high - low)>>1);
+    int mid = low + (int)((high - low) >> 1);
 
     //数据检查
     if (arr == NULL || n == 0)
     {
         return -2;
     }
-/**
+    /**
     //判断待查找的数据是否在首尾
     if (value == arr[0])
     {
@@ -76,7 +86,7 @@ int BinarySearchBase(int arr[], int n, int value)
     //注意循环退出条件，如果没有首尾查找的话为“<=”，如果有判断的话为<即可
     while (low <= high)
     {
-        mid = low + (int)((high - low)>>1);
+        mid = low + (int)((high - low) >> 1);
         if (value == arr[mid])
         {
             return mid;
@@ -96,11 +106,11 @@ int BinarySearchBase(int arr[], int n, int value)
 
 int main(void)
 {
-    int arr[10] = {1,2,3,4,5,6,7,8,9,10};
+    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int index = -2;
     int value = 4;
-    index = BinarySearchRecursion(arr,10,value);
+    index = BinarySearchRecursion(arr, 10, value);
 
-    printf("数值 %d 在arr中的位置是 %d \n",value,index);
+    printf("数值 %d 在arr中的位置是 %d \n", value, index);
     return 1;
 }
