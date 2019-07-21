@@ -4,10 +4,44 @@
  * @Author: Frame
  * @Date: 2019-07-21 13:43:50
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-21 14:14:29
+ * @LastEditTime: 2019-07-21 14:32:31
  */
 #include <stdio.h>
 #include <stdlib.h>
+
+int BSearchInternally(int arr[],int low,int high,int value);
+
+
+/**
+ * @name: BinarySearchRecursion
+ * @brief: 二分查找的递归版本
+ * @param   int arr[]   :待查找数组
+ *          int n       :待查找数组大小
+ *          int value   :待查找的值 
+ * @return: 若查找成功，返回待查找值的下标，若查找失败，则返回-1
+ */
+int BinarySearchRecursion(int arr[], int n, int value)
+{
+    return BSearchInternally(arr,0,n-1,value);
+}
+int BSearchInternally(int arr[],int low,int high,int value)
+{
+    int mid = mid = low + (int)((high - low)>>1);
+    if (low > high)
+    {
+        return -1;
+    }
+    if (value == arr[mid])
+    {
+        return mid;
+    }else if (value > arr[mid])
+    {
+        return BSearchInternally(arr,mid+1,high,value);
+    }else
+    {
+        return BSearchInternally(arr,low,mid-1,value);
+    }
+}
 
 /**
  * @name: BinarySearchBase
@@ -62,10 +96,10 @@ int BinarySearchBase(int arr[], int n, int value)
 
 int main(void)
 {
-    int arr[10] = {1,2,3,4,4,6,7,8,9,10};
+    int arr[10] = {1,2,3,4,5,6,7,8,9,10};
     int index = -2;
-    int value = 10;
-    index = BinarySearchBase(arr,10,value);
+    int value = 4;
+    index = BinarySearchRecursion(arr,10,value);
 
     printf("数值 %d 在arr中的位置是 %d \n",value,index);
     return 1;
