@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-07-22 09:24:45
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-22 15:34:22
+ * @LastEditTime: 2019-07-22 16:54:56
  */
 
 #include <stdio.h>
@@ -22,7 +22,7 @@ typedef enum
 
 /**
  * @name: BinarySearchFirst
- * @brief: 二分查找，变形版本，查找第一个值等于给定值的元素
+ * @brief: 二分查找，变形版本，查找第一个值等于给定值的元素,或是最后一个等于给定值的元素
  * @param   
  *          int arr[]   :待查找数组
  *          int n       :待查找数组大小
@@ -83,7 +83,15 @@ int BinarySearchEnhancement(int arr[], int n, int value, Model model)
 
     return -1;
 }
-
+/**
+ * @name: BinarySearchFirst
+ * @brief: 二分查找，变形版本，查找第一个值大于等于给定值的元素，查找最后一个小于等于给定值的元素
+ * @param   
+ *          int arr[]   :待查找数组
+ *          int n       :待查找数组大小
+ *          int value   :待查找的值
+ * @return: 若查找成功，返回待查找值的下标，若查找失败，则返回-1
+ */
 int BinarySearchEnhancement1(int arr[], int n, int value, Model model)
 {
     int low = 0, high = n - 1;
@@ -110,7 +118,7 @@ int BinarySearchEnhancement1(int arr[], int n, int value, Model model)
         }
         else
         {
-            if (model == find_under && (mid == n-1 || arr[mid + 1] > value))
+            if (model == find_under && (mid == n - 1 || arr[mid + 1] > value))
             {
                 return mid;
             }
@@ -120,10 +128,52 @@ int BinarySearchEnhancement1(int arr[], int n, int value, Model model)
             }
         }
     }
+    return -1;
 }
+
+int BinarySearchEnhancement_CircleSorted(int arr[], int n, int value)
+{
+    int low = 0, high = n - 1;
+    int mid = low + ((high - low) >> 1);
+
+    while (low <= high)
+    {
+        mid = low + ((high - low) >> 1);
+        if (arr[mid] == value)
+        {
+            return mid;
+        }
+        if (arr[low] <= arr[mid])
+        {
+            if (arr[low] <= value && arr[mid] > value)
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
+        if (arr[mid] <= arr[high])
+        {
+            if (arr[mid] < value && arr[high] >= value)
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
+            }
+        }
+    }
+
+    return -1;
+}
+
 int main(void)
 {
     int arr[10] = {1, 3, 4, 5, 6, 8, 8, 8, 11, 18};
+    int arr1[10] = {8, 9, 10, 1, 2, 3, 4, 5, 6, 7};
     int index = -2;
     int value = 8;
     Model model = find_last;
@@ -134,6 +184,11 @@ int main(void)
     model = find_under;
     index = BinarySearchEnhancement1(arr, 10, value, model);
     printf("在arr中%s数值 %d 的位置是 %d \n", model == find_greater ? "第一个大于等于" : "最后一个小于", value, index);
+
+    value = 10;
+    model = find_under;
+    index = BinarySearchEnhancement_CircleSorted(arr1, 10, value);
+    printf("在arr中数值 %d 的位置是 %d \n", value, index);
 
     return 1;
 }
