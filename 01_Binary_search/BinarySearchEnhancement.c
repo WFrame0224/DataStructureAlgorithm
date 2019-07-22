@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-07-22 09:24:45
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-22 16:54:56
+ * @LastEditTime: 2019-07-22 17:08:26
  */
 
 #include <stdio.h>
@@ -145,6 +145,7 @@ int BinarySearchEnhancement_CircleSorted(int arr[], int n, int value)
         }
         if (arr[low] <= arr[mid])
         {
+            //如果落在有序的区间内，正常使用二分法更新下标
             if (arr[low] <= value && arr[mid] > value)
             {
                 high = mid - 1;
@@ -156,6 +157,7 @@ int BinarySearchEnhancement_CircleSorted(int arr[], int n, int value)
         }
         if (arr[mid] <= arr[high])
         {
+            //如果落在有序的区间内，正常使用二分法更新下标
             if (arr[mid] < value && arr[high] >= value)
             {
                 low = mid + 1;
@@ -173,7 +175,7 @@ int BinarySearchEnhancement_CircleSorted(int arr[], int n, int value)
 int main(void)
 {
     int arr[10] = {1, 3, 4, 5, 6, 8, 8, 8, 11, 18};
-    int arr1[10] = {8, 9, 10, 1, 2, 3, 4, 5, 6, 7};
+    int arr1[10] = {10, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     int index = -2;
     int value = 8;
     Model model = find_last;
