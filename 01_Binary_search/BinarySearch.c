@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-07-21 13:43:50
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-22 08:53:19
+ * @LastEditTime: 2019-07-22 09:21:11
  * ----------------------------------
  * 二分查找法时间复杂度O(logn)
  * 注意点：
@@ -12,7 +12,7 @@
  *      2）mid = low+((high-low)>>1),可放置溢出且性能极致
  *      3）low和high的更新，low = mid+1,high = mid-1
  * 应用场景的局限性：
- *      1）二分查找依赖额是顺序结构，因二分查找算法需要按照下标随机访问元素，链表存储采用二分查找时间福在读会大大增加
+ *      1）二分查找依赖额是顺序结构，因二分查找算法需要按照下标随机访问元素，链表存储采用二分查找时间复杂度在读会大大增加
  *      2）二分查找针对的是有序数组，且插入，删除操作不频繁一次排序多次查找的场景中
  *      3）数据量很小，完全没有必要使用二分查找，数据太大，内存有限制的场合，二分查找也不适合
  */
@@ -76,7 +76,7 @@ int BinarySearchBase(int arr[], int n, int value)
     {
         return -2;
     }
-    /**
+/**
     //判断待查找的数据是否在首尾
     if (value == arr[0])
     {
@@ -165,9 +165,9 @@ float Sqrt_BinarySearch(int number, float precision)
 
 int main(void)
 {
-    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int arr[10] = {1, 3, 4, 5, 6, 8, 8, 8, 11, 18};
     int index = -2;
-    int value = 4;
+    int value = 8;
     index = BinarySearchRecursion(arr, 10, value);
 
     printf("数值 %d 在arr中的位置是 %d \n", value, index);
