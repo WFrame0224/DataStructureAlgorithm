@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-07-21 13:43:50
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-21 17:03:08
+ * @LastEditTime: 2019-07-22 08:53:19
  * ----------------------------------
  * 二分查找法时间复杂度O(logn)
  * 注意点：
@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
+
 
 int BSearchInternally(int arr[], int low, int high, int value);
 
@@ -122,10 +124,10 @@ int BinarySearchBase(int arr[], int n, int value)
  * 求平方根即可化解为：
  *          x(n+1) = (x(n) + a/x(n))/2
  */
-double Sqrt_NewtonIteration(int number, double precision)
+float Sqrt_NewtonIteration(int number, float precision)
 {
-    double x_current = number / 2.0;
-    double x_next = (x_current + number / x_current) / 2.0;
+    float x_current = number / 2.0;
+    float x_next = (x_current + number / x_current) / 2.0;
     while (x_current - x_next > precision)
     {
         x_current = x_next;
@@ -141,10 +143,10 @@ double Sqrt_NewtonIteration(int number, double precision)
  *          precision:精确度
  * @return: 返回得到的平方根 
  */
-double Sqrt_BinarySearch(int number, double precision)
+float Sqrt_BinarySearch(int number, float precision)
 {
-    double low = 0, high = number;
-    double mid = low + (high - low) / 2;
+    float low = 0, high = number;
+    float mid = low + (high - low) / 2;
 
     while (fabs(mid * mid - number) >= precision)
     {
@@ -163,19 +165,25 @@ double Sqrt_BinarySearch(int number, double precision)
 
 int main(void)
 {
-    // int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    // int index = -2;
-    // int value = 4;
-    // index = BinarySearchRecursion(arr, 10, value);
+    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int index = -2;
+    int value = 4;
+    index = BinarySearchRecursion(arr, 10, value);
 
-    // printf("数值 %d 在arr中的位置是 %d \n", value, index);
-    int number = 6;
-    double precision = 0.000001;
-    double result = Sqrt_NewtonIteration(number, precision);
-    printf("牛顿迭代法:\n%d 的精确到 %f 的平方根为%f\n", number, precision, result);
+    printf("数值 %d 在arr中的位置是 %d \n", value, index);
+
+    clock_t start_t,end_t;
+    float total_t;
     
-    result = Sqrt_BinarySearch(number, precision);
-    printf("二分查找法\n%d 的精确到 %f 的平方根为%f", number, precision, result);
+    int number = 6;
+    float precision = 0.000001;
 
+    float result = Sqrt_NewtonIteration(number, precision);
+    printf("牛顿迭代法:\n%d 的精确到 %.6f 的平方根为%.6f\n", number, precision, result);
+
+    result = Sqrt_BinarySearch(number, precision);
+    printf("二分查找法\n%d 的精确到 %.6f 的平方根为%.6f", number, precision, result);
+
+   
     return 1;
 }
