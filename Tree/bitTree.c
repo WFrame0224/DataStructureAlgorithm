@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-08-23 16:17:19
  * @LastEditors: Frame
- * @LastEditTime: 2019-08-24 14:26:06
+ * @LastEditTime: 2019-08-24 16:19:45
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -104,6 +104,71 @@ void postOrderTraveral(BiTree biTree)
     printf("%c",biTree->data);//根节点输出 
 }
 
+/**
+ * @name: getTreeDeepth
+ * @brief: 获取树的深度，也是采用递归的方式，求出左右子树的最大值
+ * @param {type} 
+ * @return: 
+ */
+int getTreeDeepth(BiTree biTree)
+{
+    if (biTree == NULL)
+    {
+        return 0;
+    }
+    // 如果没有左右子树，则此时深度为1
+    if (biTree->leftChild == NULL && biTree->leftChild)
+    {
+        return 1;
+    }
+    int leftDeep = 0;
+    int rightDeep = 0;
+    //获取左子树的深度
+    if(NULL != biTree->leftChild)
+    {
+        leftDeep = getTreeDeepth(biTree->leftChild);
+    }
+    //获取右子树的深度
+    if (NULL != biTree->rightChild)
+    {
+        rightDeep = getTreeDeepth(biTree->rightChild);
+    }
+
+    return (leftDeep > rightDeep ? leftDeep : rightDeep) + 1;
+}
+/**
+ * @name: levelOrderTraveral
+ * @brief: 层序输出，递归实现，需要求深度
+ * @param {type} 
+ * @return: 
+ */
+void _levelOrderTraveral(BiTree biTree,int deep)
+{
+    if(NULL == biTree || 0 == deep)
+    {
+        return;
+    }
+    if (1 == deep)
+    {
+        printf("%c",biTree->data);
+        return;
+    }
+    //打印左左子树的上一层
+    _levelOrderTraveral(biTree->leftChild,deep-1);
+    //打印右子树的上一层
+    _levelOrderTraveral(biTree->rightChild,deep-1);
+}
+void levelOrderTraveral(BiTree biTree)
+{
+    if(NULL == biTree)
+        return;
+    int deepth = getTreeDeepth(biTree);
+    for (int i = 1; i <= deepth; i++)
+    {
+        _levelOrderTraveral(biTree,i);
+    }
+}
+
 int main(void)
 {
 	BiTree biTree;
@@ -114,4 +179,8 @@ int main(void)
     inOrderTraveral(biTree);
     printf("\n后序遍历输出：\n");
     postOrderTraveral(biTree);
+    
+    printf("\n层序遍历输出：\n");
+    levelOrderTraveral(biTree);
+
 }
