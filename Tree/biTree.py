@@ -4,7 +4,7 @@
 @Author: Frame
 @Date: 2019-08-24 10:54:12
 @LastEditors: Frame
-@LastEditTime: 2019-08-24 15:18:56
+@LastEditTime: 2019-08-24 15:21:00
 '''
 # -*- coding: utf-8 -*-
 import sys
@@ -99,21 +99,6 @@ class BiTree(BiTreeNode):
             if node.rightChild is not None:
                 # 得到右孩子并入队
                 nodeDeque.append(node.rightChild) 
-        
-            
-
-
-    def printTrave(self, biTree):
-        print("先序遍历: ", end="")
-        self.preOrderTraveral(biTree)
-        print('\n')
-        print("中序遍历: ", end="")
-        self.inOrderTraveral(biTree)
-        print('\n')
-        print("后序遍历: ", end="")
-        self.postOrderTraveral(biTree)
-        print('\n')
-
 
 
 if __name__ == "__main__":
