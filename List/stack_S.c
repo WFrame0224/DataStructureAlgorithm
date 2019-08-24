@@ -4,7 +4,7 @@
  * @Author: Frame
  * @LastEditors: Frame
  * @Date: 2019-05-10 21:34:55
- * @LastEditTime: 2019-05-13 11:42:10
+ * @LastEditTime: 2019-08-07 21:11:53
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,7 +39,6 @@ typedef struct sqstack
 //---------------函数声明-------------------
 Status ClearStack(SqStack *S);
 int StackEmpty(SqStack S);
-Status GetTop(SqStack S, ElemType *e);
 Status GetTop(SqStack S, ElemType *e);
 Status Push(SqStack *S, ElemType e);
 Status Pop(SqStack *S, ElemType *e);

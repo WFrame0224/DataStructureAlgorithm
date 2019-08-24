@@ -12,6 +12,7 @@ __pycache__/
 **/*.md
 **/*.vscode
 **/*.exe
+Tree/bitTree/
 
 # Distribution / packaging
 .Python

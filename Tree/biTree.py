@@ -4,7 +4,7 @@
 @Author: Frame
 @Date: 2019-08-24 10:54:12
 @LastEditors: Frame
-@LastEditTime: 2019-08-24 14:23:51
+@LastEditTime: 2019-08-24 15:18:56
 '''
 # -*- coding: utf-8 -*-
 import sys
@@ -80,6 +80,27 @@ class BiTree(BiTreeNode):
                 bT = stack.pop()
                 bT = bT.rightChild
 
+    def levelOrderTraveral(self,root):
+        """ 采用 队列 实现 层序遍历 """
+        nodeDeque = deque()
+
+        node = root
+        # 根结点入队
+        nodeDeque.append(node)
+        
+        while (node is not None) and len(nodeDeque) > 0:
+            if len(nodeDeque) > 0:
+                # 出队，并输出
+                node = nodeDeque.popleft()
+                print(node.data,end=" ")
+            if node.leftChild is not None:
+                # 得到左孩子，并入队
+                nodeDeque.append(node.leftChild)
+            if node.rightChild is not None:
+                # 得到右孩子并入队
+                nodeDeque.append(node.rightChild) 
+        
+            
 
 
     def printTrave(self, biTree):
@@ -96,8 +117,8 @@ class BiTree(BiTreeNode):
 
 
 if __name__ == "__main__":
-    biTree = BiTree(list([1,2,4,None,None,5,None,None,3,6,None,None,7,None,None]))
+    biTree = BiTree(list([1,2,4,None,None,5,None,None,3,None,7,None,None]))
     root = biTree.createBinaryTree()
     # biTree.printTrave(root)
-    biTree.perOrderTraveralWithStack(root)
+    biTree.levelOrderTraveral(root)
     pass
