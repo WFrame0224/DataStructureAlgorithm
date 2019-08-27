@@ -1,13 +1,84 @@
 /*
- * @Descripttion: 二叉堆的构建（最小堆为例）
+ * @Descripttion: 二叉堆的构建（最小堆为例），并依次为基础构建小优先队列
  * @version: 二叉堆采用顺序存储实现，不同与其他版本的书籍，我们此处，根节点存储在数组下标为1的位置，而非0，即空出一个空间不使用
  * @Author: Frame
  * @Date: 2019-08-26 21:09:06
  * @LastEditors: Frame
- * @LastEditTime: 2019-08-27 10:09:26
+ * @LastEditTime: 2019-08-27 11:34:33
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+void upAdjust(int arr[], int length);
+void downAdjust(int arr[], int parentIndex, int length);
+void buildHeap(int arr[], int length);
+
+void resize();
+
+
+#define QueueSize 32
+//构建优先队列的数据结构
+typedef struct
+{
+	int *array;
+    int size;
+}PriorityQueue;
+PriorityQueue priQueue;
+
+/**
+ * @name: enQueue
+ * @brief: 优先队列的入队操作
+ * @param 
+ *          int key :入队的值
+ * @return: 
+ */
+void enQueue(int key)
+{
+    if(priQueue.size >= sizeof(priQueue.array)/sizeof(priQueue.array[0]))
+    {
+        resize();
+    }
+    priQueue.array[priQueue.size++] = key;
+    upAdjust(priQueue.array,priQueue.size);
+}
+/**
+ * @name: deQueue
+ * @brief: 优先队列的出队操作
+ * @param {type} 
+ * @return: 
+ */
+int deQueue(void)
+{
+   if(priQueue.size <= 0)
+   {
+       return -1;
+   }
+   //获取堆顶元素
+   int headData = priQueue.array[1];
+   //替换最后一个元素的位置
+   priQueue.array[1] = priQueue.array[--priQueue.size];
+   //执行下沉操作
+   downAdjust(priQueue.array,1,priQueue.size); 
+
+   return headData;
+}
+
+void resize()
+{
+    int newsize = priQueue.size * 2;
+    int * arry = (int *)malloc(sizeof(int)* newsize);
+    for (int i = 0; i < newsize; i++)
+    {
+        if (i < priQueue.size)
+        {
+            arry[i] = priQueue.array[i];
+        }
+        
+    }
+    free(priQueue.array);
+    priQueue.array = arry;
+}
 
 /**
  * @name: upAdjust
@@ -105,5 +176,25 @@ int main(void)
     {
         printf("%d ",arr1[i]);
     }
-    return 0;
+	printf("\n");
+    //初始化最小优先序列
+    priQueue.array = (int*)malloc(sizeof(int)*QueueSize);
+    priQueue.size = 1;
+
+    enQueue(3);
+    enQueue(5);
+    enQueue(10);
+    enQueue(2);
+    enQueue(7);
+    enQueue(1);
+
+	for (int i = 1; i < priQueue.size; i++)
+	{
+		printf("%d ", priQueue.array[i]);
+	}
+	printf("\n");
+    printf("deQueue Data is:%d\n",deQueue());
+    printf("deQueue Data is:%d\n",deQueue());
+
+	return 0;
 }
