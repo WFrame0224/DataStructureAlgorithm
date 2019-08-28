@@ -4,7 +4,7 @@
  * @Author: Frame
  * @Date: 2019-06-28 15:48:27
  * @LastEditors: Frame
- * @LastEditTime: 2019-07-08 21:43:22
+ * @LastEditTime: 2019-08-28 11:11:22
  */
 #include "stdio.h"
 #include "stdlib.h"
@@ -221,7 +221,7 @@ void CountingSort(int arr[], int n)
  *      数据被分为三个部分，前面 p 到q-1 之间都是小于pivot，后面q+1到r之间的是大于pivot的，中间的是pivot，
  *      根据分治的思想，我们可以递归排序从（p~q-1）和（q+1,r）之间的数据，直至区间为1
  *      特点：
- *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(n^2)，平均情况O(n^2) 
+ *          时间复杂度：O(nlogn)，最好情况O(nlogn),最坏情况O(n^2)，平均情况O(nlogn) 
  *          空间复杂度是O(1)，属于原地排序算法
  *          是 不稳定 的排序算法
  * @param 
