@@ -259,7 +259,24 @@ LinkList ListReverse_recursive(LinkList L)
     if (L == NULL || L->next == NULL)// 链表为空，或者仅有一个数据
         return L;
     LinkList LNew = ListReverse_recursive(L->next);
-    L->next->next = L;
-    L->next = NULL;
+    L->next->next = L;  //把当前节点的下一个结点反转
+    L->next = NULL;     //断开原来的链
     return LNew;
+}
+char ListHasCircle(LinkList L)
+{
+    LinkList p1 = L->next;
+    LinkList p2 = L->next;
+
+    while (!p1->next|| !p2->next)
+    {
+        p1 = p1->next;
+        p2 = p2->next->next;
+        if(p1 == p2)
+        {
+            return 1;
+        }
+    }
+    
+    return 0;
 }
