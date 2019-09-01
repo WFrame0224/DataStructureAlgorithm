@@ -280,3 +280,67 @@ char ListHasCircle(LinkList L)
     
     return 0;
 }
+/**
+    给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+k 是一个正整数，它的值小于或等于链表的长度。
+    如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+示例 :
+    给定这个链表：1->2->3->4->5
+    当 k = 2 时，应当返回: 2->1->4->3->5
+    当 k = 3 时，应当返回: 3->2->1->4->5
+*/
+LinkList *reverseKGroup(LinkList head, int k)
+{
+
+    //空链或者链表长度为1
+    if (head == NULL || head->next == NULL)
+    {
+        return head;
+    }
+    LinkList p = head;
+    int listLen = 0;
+    while (p != NULL)
+    {
+        p = p->next;
+        listLen++;
+    }
+    
+    
+    LinkList lNew = (LinkList *)malloc(sizeof(LinkList));
+    lNew->next = NULL;
+    LinkList lNewTail = lNew;
+
+    int i = listLen / k *k;
+    while (head != NULL && i>0)
+    {
+        //反转k长度的子链
+        int j = k;
+        while (j--)
+        {
+            LinkList first = head;
+            head = head->next;
+            first->next = lNewTail->next;
+            lNewTail->next = first;
+            i--;
+        }
+        //移动到子链末尾
+        while (lNewTail->next != NULL)
+        {
+            lNewTail = lNewTail->next;
+        }
+
+    }
+	p = lNew;
+	
+	lNew = lNew->next;
+    lNewTail->next = head;
+    lNewTail = NULL;
+    head = lNew;
+	if (p != NULL)
+	{
+		free(p);
+	}
+	p = NULL;
+    return head;
+    
+}
