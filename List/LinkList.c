@@ -556,3 +556,89 @@ struct ListNode *mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
     tempNode = NULL;
     return lNew;
 }
+
+struct ListNode *mergeKLists(struct ListNode **lists, int listsSize)
+{
+
+    if (lists == NULL)
+    {
+        return NULL;
+    }
+    if (listsSize == 1)
+    {
+        return lists[0];
+    }
+    
+    struct ListNode *lNew = NULL;
+    struct ListNode *lastNode = lNew;
+    for (int i = 0; i < listsSize; i++)
+    {
+        if(lNew == NULL)
+        {
+            lNew = mergeTwoLists(NULL,lists[i]);
+        }
+        else
+        {
+            lNew = mergeTwoLists(lNew,lists[i]);
+        }
+        if (lNew != NULL)
+        {
+            lastNode = lNew;
+            while (lastNode->next != NULL)
+            {
+                lastNode = lastNode->next;
+            }
+        }
+    }
+    
+    return lNew;
+}
+/**
+合并 k 个排序链表，返回合并后的排序链表。请分析和描述算法的复杂度。
+
+示例:
+
+    输入:
+    [
+        1->4->5,
+        1->3->4,
+        2->6
+    ]
+    输出: 1->1->2->3->4->4->5->6
+*/
+struct ListNode *mergeKLists(struct ListNode **lists, int listsSize)
+{
+
+    if (lists == NULL)
+    {
+        return NULL;
+    }
+    if (listsSize == 1)
+    {
+        return lists[0];
+    }
+    
+    struct ListNode *lNew = NULL;
+    struct ListNode *lastNode = lNew;
+    for (int i = 0; i < listsSize; i++)
+    {
+        if(lNew == NULL)
+        {
+            lNew = mergeTwoLists(NULL,lists[i]);
+        }
+        else
+        {
+            lNew = mergeTwoLists(lNew,lists[i]);
+        }
+        if (lNew != NULL)
+        {
+            lastNode = lNew;
+            while (lastNode->next != NULL)
+            {
+                lastNode = lastNode->next;
+            }
+        }
+    }
+    
+    return lNew;
+}
