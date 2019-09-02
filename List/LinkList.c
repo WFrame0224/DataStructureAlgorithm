@@ -495,3 +495,64 @@ bool hasCycle(struct ListNode *head)
     }
     return false;
 }
+
+/**
+    将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成
+*/
+struct ListNode *mergeTwoLists(struct ListNode *l1, struct ListNode *l2)
+{
+    if (l1 == NULL && l2 == NULL)
+    {
+        return NULL;
+    }else if (l1 == NULL && l2 != NULL)
+    {
+        return l2;
+    }else if(l1 != NULL && l2 == NULL)
+    {
+        return l1;
+    }
+    
+    struct ListNode *lNew = (struct ListNode *)malloc(sizeof(struct ListNode));
+    lNew = NULL;
+    struct ListNode *p = lNew;
+    struct ListNode *tempNode = NULL;
+
+    while (l1 != NULL && l2 != NULL)
+    {
+        if (l1->val <= l2->val)
+        {
+            tempNode = l1;
+
+            l1 = l1->next;
+        }
+        else
+        {
+            tempNode = l2;
+            l2 = l2->next;
+        }
+
+        if(p == NULL)
+        {
+            p = tempNode;
+            lNew = p;
+        }else
+        {
+            //插入
+            p->next = tempNode;
+            p = tempNode;
+        }
+        
+       
+    }
+    //判断哪个链还有剩余数
+    if(l1!= NULL)
+    {
+        p->next = l1;
+    }else
+    {
+        p->next = l2;
+    }
+    p = NULL;
+    tempNode = NULL;
+    return lNew;
+}
