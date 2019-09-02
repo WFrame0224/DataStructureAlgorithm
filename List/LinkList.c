@@ -642,3 +642,46 @@ struct ListNode *mergeKLists(struct ListNode **lists, int listsSize)
     
     return lNew;
 }
+
+/**
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+示例：
+
+    给定一个链表: 1->2->3->4->5, 和 n = 2.
+
+    当删除了倒数第二个节点后，链表变为 1->2->3->5.
+*/
+
+struct ListNode *removeNthFromEnd(struct ListNode *head, int n)
+{
+
+	struct ListNode* p1 = head, * p2 = head;
+	int i = 1;
+	//使得p2指针与p1指针指向的节点相个 n,
+	while (i < n)
+	{
+		p2 = p2->next;
+		i++;
+	}
+	struct ListNode* prev = NULL;
+	//将p2移动到末尾，则p1指向的节点即为待删除的节点
+	while (p2->next != NULL)
+	{
+		p2 = p2->next;
+		prev = p1;
+		p1 = p1->next;
+	}
+	if (prev != NULL)
+	{
+		prev->next = p1->next;
+	}
+	else
+	{
+		head = p1->next;
+	}
+	prev = NULL;
+	p1 = NULL;
+	p2 = NULL;
+	return head;
+}
