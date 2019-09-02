@@ -422,3 +422,48 @@ struct ListNode* reverseBetween(struct ListNode* head, int m, int n)
 	return head;
 
 }
+struct ListNode *reverseBetween(struct ListNode *head, int m, int n)
+{
+    if (head == NULL)
+    {
+        return head;
+    }
+    
+    //定义两个节点，当前节点和前一个节点
+    struct ListNode *curr = head, *prev = NULL;
+
+    //移动到第m个节点的位置
+    while(m>1)
+    {
+        prev = curr;
+        curr = curr->next;
+        m--;
+        n--;//n也跟着减，始终保持与m相同的距离
+    }
+
+    struct ListNode *tail = curr,*con = prev; 
+    //进行反转
+    while(n>0)
+    {
+        //保存下一个节点以免丢失
+        struct ListNode *temp = curr->next;
+        //当前节点指向前一个节点实现反转
+        curr->next = prev;
+        //更新准备下一次循环
+        prev = curr;
+        curr = temp;
+        n--;
+    }
+    //拼接，将反转后的子串拼接到原来的串上
+    if (con != NULL)    //原来的串不是从第一个开始的
+    {
+        con->next = prev;
+    }
+    else
+    {
+        head = prev;
+    }
+    tail->next = curr;
+
+    return head;
+}
