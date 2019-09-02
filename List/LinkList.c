@@ -685,3 +685,28 @@ struct ListNode *removeNthFromEnd(struct ListNode *head, int n)
 	p2 = NULL;
 	return head;
 }
+
+struct ListNode *middleNode(struct ListNode *head)
+{
+    if(head == NULL)
+    {
+        return head;
+    }else if (head->next == NULL)
+    {
+        return head;
+    }
+
+    struct ListNode *p1 = head, *p2 = head;
+
+    while(p2->next != NULL)
+    {
+        p1 = p1->next;
+        p2 = p2->next->next;
+        if (p2 == NULL)
+        {
+            break;
+        }
+    }
+
+    return p1;
+}
