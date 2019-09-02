@@ -344,3 +344,81 @@ LinkList *reverseKGroup(LinkList head, int k)
     return head;
     
 }
+/**反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+
+说明:
+    1 ≤ m ≤ n ≤ 链表长度。
+
+示例:
+
+    输入: 1->2->3->4->5->NULL, m = 2, n = 4
+    输出: 1->4->3->2->5->NULL
+*/
+struct ListNode* reverseBetween(struct ListNode* head, int m, int n)
+{
+	if (head ==NULL || n < m || m < 1)
+	{
+		return head;
+	}
+
+	struct ListNode* p = head;
+	//求长度
+	int liLen = 0;
+	while (p != NULL)
+	{
+		p = p->next;
+		liLen++;
+	}
+	if (n > liLen || m > liLen)
+	{
+		return head;
+	}
+
+	struct ListNode* lNew = (struct ListNode*)malloc(sizeof(struct ListNode));
+	p = head;
+	//移动到m的前一个位置
+	int i = 1;
+	while (i < m - 1)
+	{
+		p = p->next;
+		i++;
+	}
+	struct ListNode* liTail = p;
+	if (m != 1)
+	{
+		p = p->next;
+	}
+	i = m;
+	//反转链表直到n处
+	while (i <= n)
+	{
+		struct ListNode* first = p;
+		p = p->next;
+		first->next = lNew;
+		lNew = first;
+		i++;
+	}
+	//将n后面的链表接上去
+	i = 0;
+	struct ListNode* lNewTail = lNew;
+	while (i < (n - m))
+	{
+		lNewTail = lNewTail->next;
+		i++;
+	}
+	lNewTail->next = p;
+	lNewTail = NULL;
+	if (m == 1)
+	{
+		head = lNew;
+	}
+	else
+	{
+		liTail->next = lNew;
+	}
+	
+	liTail = NULL;
+
+	return head;
+
+}
